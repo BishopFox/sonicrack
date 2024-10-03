@@ -1,0 +1,4 @@
+cpio
+cryptsetup
+openssl
+p7zip-full
