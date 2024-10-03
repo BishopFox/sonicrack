@@ -15,7 +15,7 @@ This tool has been made public to support good-faith security research into Soni
 Debian Linux:
 
 ```
-sudo apt update && sudo apt install -y $(awk '{print $1}' apt.txt)
+sudo apt update && sudo apt install -y $(awk '{print $1}' requirements/apt.txt)
 python3 -m pip install -r requirements/pip.txt
 ```
 
