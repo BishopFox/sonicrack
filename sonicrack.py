@@ -54,7 +54,7 @@ def extract_ova_files(image_path):
     # Extract volume images from VMDK file with 7zip
     try:
         subprocess.run(
-            ["7z", "e", "-o/tmp/sonicrack", vmdk_file, "BOOT.img", "INSTALL-CACHE.img"],
+            ["7z", "e", "-o/tmp/sonicrack", vmdk_file, "BOOT.img", "INSTALL-CACHE.img", "ICACHE.img"],
             check=True,
             capture_output=True,
         )
@@ -62,7 +62,11 @@ def extract_ova_files(image_path):
         raise ValueError(f"Failed to extract volume images from VMDK file: {err}")
     if not os.path.isfile("/tmp/sonicrack/BOOT.img"):
         raise ValueError("Failed to extract BOOT.img from VMDK file: not found")
-    if not os.path.isfile("/tmp/sonicrack/INSTALL-CACHE.img"):
+    if os.path.isfile("/tmp/sonicrack/INSTALL-CACHE.img"):
+        installer = "INSTALL-CACHE"
+    elif os.path.isfile("/tmp/sonicrack/ICACHE.img"):
+        installer = "ICACHE"
+    else:
         raise ValueError(
             "Failed to extract INSTALL-CACHE.img from VMDK file: not found"
         )
@@ -73,16 +77,16 @@ def extract_ova_files(image_path):
     unmount_image("/mnt/BOOT")
 
     # Extract firmware image from INSTALL-CACHE volume
-    mount_image("/tmp/sonicrack/INSTALL-CACHE.img", "/mnt/INSTALL-CACHE")
+    mount_image(f"/tmp/sonicrack/{installer}.img", f"/mnt/{installer}")
     shutil.copy2(
-        "/mnt/INSTALL-CACHE/currentFirmware/currentFirmware.bin.sig", "/tmp/sonicrack"
+        f"/mnt/{installer}/currentFirmware/currentFirmware.bin.sig", "/tmp/sonicrack"
     )
-    unmount_image("/mnt/INSTALL-CACHE")
+    unmount_image(f"/mnt/{installer}")
 
     # Clean up
     os.remove(vmdk_file)
     os.remove("/tmp/sonicrack/BOOT.img")
-    os.remove("/tmp/sonicrack/INSTALL-CACHE.img")
+    os.remove(f"/tmp/sonicrack/{installer}.img")
 
 
 # Mount volume image
