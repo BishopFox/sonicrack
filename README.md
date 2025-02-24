@@ -8,7 +8,7 @@ A tool to decrypt SonicOSX NSv firewall firmware (version 7.1.1+). Run it agains
 
 Keys seem to be specific to each model, so this tool will only work for VMware NSv images. Obtaining keys for other models could, in theory, allow you decrypt other images.
 
-This tool has been made public to support good-faith security research into SonicOSX. For a detailed explanation, visit the [Bishop Fox blog](https://bishopfox.com/blog).
+This tool has been made public to support good-faith security research into SonicOSX. For a detailed explanation, visit the [Bishop Fox blog](https://bishopfox.com/blog/sonicwall-decrypting-sonicosx-firmware).
 
 ## Setup
 
